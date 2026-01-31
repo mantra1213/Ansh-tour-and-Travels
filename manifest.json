@@ -1,0 +1,33 @@
+
+{
+  "name": "ANSH Tours & Travels",
+  "short_name": "ANSH Travels",
+  "description": "Premium Taxi & Outstation Car Rental Service in Mumbai",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["travel", "transportation"],
+  "shortcuts": [
+    {
+      "name": "Book Now",
+      "short_name": "Book",
+      "url": "/?tab=book",
+      "icons": [{ "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg", "sizes": "192x192" }]
+    }
+  ]
+}

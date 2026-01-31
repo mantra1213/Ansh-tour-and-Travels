@@ -1,0 +1,7 @@
+{
+  "name": "ANSH Tours & Travels",
+  "description": "A premium, hyper-user-friendly mobile app for Mumbai's trusted taxi service, specializing in car rentals, outstation cabs, and luxury travel solutions.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
