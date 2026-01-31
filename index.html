@@ -30,6 +30,25 @@
       ::-webkit-scrollbar { width: 0px; background: transparent; }
       .no-scrollbar::-webkit-scrollbar { display: none; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      #root:empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: white;
+      }
+      #root:empty::after {
+        content: "Loading ANSH Travels...";
+        font-weight: 800;
+        color: #1e3a8a;
+        font-size: 1.2rem;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
     </style>
   <script type="importmap">
 {
