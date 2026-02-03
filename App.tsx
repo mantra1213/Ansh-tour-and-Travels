@@ -9,7 +9,6 @@ import {
   History, 
   Settings, 
   LogOut, 
-  Star,
   Globe,
   Plane,
   ChevronRight as ChevronRightIcon,
@@ -59,7 +58,7 @@ const App: React.FC = () => {
       const parsed = JSON.parse(savedProfile);
       setUserProfile(parsed);
       
-      // Load bookings specific to this phone number
+      // Load bookings specific to this phone number (logged-in account)
       const allBookings = JSON.parse(localStorage.getItem('ansh_bookings') || '[]');
       const userBookings = allBookings.filter((b: SavedBooking) => b.phone === parsed.phone);
       setBookings(userBookings);
@@ -85,7 +84,7 @@ const App: React.FC = () => {
     localStorage.setItem('ansh_user_profile', JSON.stringify(profile));
     setUserProfile(profile);
     
-    // Load bookings for this new profile
+    // Load bookings specifically for this profile/phone number
     const allBookings = JSON.parse(localStorage.getItem('ansh_bookings') || '[]');
     setBookings(allBookings.filter((b: SavedBooking) => b.phone === profile.phone));
   };
@@ -119,7 +118,11 @@ const App: React.FC = () => {
     const allBookings = JSON.parse(localStorage.getItem('ansh_bookings') || '[]');
     const updatedAll = [newBooking, ...allBookings];
     localStorage.setItem('ansh_bookings', JSON.stringify(updatedAll));
-    setBookings(prev => [newBooking, ...prev]);
+    
+    // Update local state if the phone matches the current profile
+    if (userProfile && data.phone === userProfile.phone) {
+      setBookings(prev => [newBooking, ...prev]);
+    }
 
     const phoneNumber = "918850351310";
     const message = `*ANSH Tours & Travels Booking Request*%0A%0A` +
@@ -168,7 +171,7 @@ const App: React.FC = () => {
             <div className="flex items-center justify-between px-1">
               <div>
                 <h2 className="text-2xl font-black text-slate-900 leading-none">My Trips</h2>
-                <p className="text-xs text-slate-400 font-medium mt-1">Booked on {userProfile.phone}</p>
+                <p className="text-xs text-slate-400 font-medium mt-1">History for {userProfile.phone}</p>
               </div>
               <div className="p-2.5 bg-slate-50 rounded-2xl border border-slate-100">
                 <Calendar size={20} className="text-blue-600" />
@@ -182,7 +185,7 @@ const App: React.FC = () => {
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-bold text-slate-800 text-lg">No trips found</h3>
-                  <p className="text-xs text-slate-400">You haven't booked any cabs yet.</p>
+                  <p className="text-xs text-slate-400">You haven't booked any trips yet.</p>
                 </div>
                 <button 
                   onClick={() => setActiveTab('book')}
@@ -254,8 +257,8 @@ const App: React.FC = () => {
             <div className="bg-blue-600 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl shadow-blue-200">
               <div className="relative z-10 space-y-2">
                 <CheckCircle2 size={32} className="text-blue-300 mb-2" />
-                <h3 className="text-xl font-bold leading-tight">Need help with <br/> existing trips?</h3>
-                <p className="text-xs text-blue-100">Our concierge is available 24/7 on WhatsApp for route changes or driver details.</p>
+                <h3 className="text-xl font-bold leading-tight">Need help with <br/> your trips?</h3>
+                <p className="text-xs text-blue-100">Our concierge is available 24/7 on WhatsApp for any assistance.</p>
                 <button 
                   onClick={() => window.open('https://wa.me/918850351310', '_blank')}
                   className="mt-4 px-6 py-2 bg-white text-blue-600 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg"
