@@ -2,11 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-// Immediate Service Worker Registration
+// Professional Service Worker Registration for PWA Stores
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', { scope: '/' })
-    .then(() => console.log('ANSH PWA Ready'))
-    .catch(err => console.error('PWA Registration Failed:', err));
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .then((registration) => {
+        console.log('ANSH PWA Registered. Scope:', registration.scope);
+      })
+      .catch((err) => {
+        // We log as a warning because preview origins often block SW registration
+        console.warn('PWA Service Worker registration skipped or failed in current origin:', err.message);
+      });
+  });
 }
 
 const rootElement = document.getElementById('root');

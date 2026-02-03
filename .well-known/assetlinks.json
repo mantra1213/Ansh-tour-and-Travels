@@ -1,4 +1,3 @@
-
 [
   {
     "relation": [
@@ -6,9 +5,9 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.anshtourstravels.twa",
+      "package_name": "com.anshtourstravels.mumbai",
       "sha256_cert_fingerprints": [
-        "YOUR_SHA256_FINGERPRINT_HERE"
+        "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
       ]
     }
   }
