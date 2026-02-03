@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>ANSH Tours & Travels</title>
     
-    <!-- PWA & Play Store Ready Meta Tags -->
+    <!-- PWA Primary Meta Tags -->
     <meta name="theme-color" content="#1e3a8a" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="ANSH Travels" />
-    <meta name="description" content="Premium Taxi & Outstation Car Rental Service in Mumbai" />
-    <link rel="manifest" href="manifest.json" />
+    <meta name="description" content="Premium Taxi & Outstation Car Rental Service in Mumbai. Trusted travel partner for airport transfers and spiritual tours." />
     
-    <!-- Icon placeholders -->
+    <!-- App Icons -->
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg" />
     <link rel="apple-touch-icon" href="https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg" />
+    
+    <!-- Manifest Link (Critical for Play Store) -->
+    <link rel="manifest" href="/manifest.json" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -51,10 +52,9 @@
         margin-bottom: 24px;
         border-radius: 50%;
         box-shadow: 0 0 0 4px #f1f5f9, 0 10px 25px -5px rgba(30, 58, 138, 0.25);
-        background-color: transparent;
       }
       #root:empty::after {
-        content: "ANSH Travels";
+        content: "ANSH TRAVELS";
         font-weight: 900;
         color: #1e3a8a;
         font-size: 1.1rem;
@@ -83,6 +83,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
