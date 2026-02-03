@@ -25,8 +25,8 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ onComplete }) => {
   if (step === 2) {
     return (
       <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-8 animate-in fade-in duration-500">
-        <div className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6 animate-bounce">
-          <CheckCircle2 size={48} />
+        <div className="w-28 h-28 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6 animate-bounce shadow-xl shadow-emerald-100">
+          <CheckCircle2 size={56} />
         </div>
         <h2 className="text-2xl font-black text-slate-900 text-center mb-2">Welcome to ANSH</h2>
         <p className="text-slate-400 text-sm text-center font-medium">Setting up your premium travel experience...</p>
@@ -38,11 +38,18 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ onComplete }) => {
     <div className="fixed inset-0 z-[100] bg-white flex flex-col p-8 animate-in slide-in-from-bottom duration-700">
       <div className="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full">
         <div className="mb-12 text-center">
-          <img 
-            src={LOGO_URL} 
-            alt="ANSH Logo" 
-            className="w-24 h-24 rounded-full mx-auto mb-6 shadow-2xl border-4 border-slate-50"
-          />
+          <div className="relative inline-block mb-8">
+            <div className="w-36 h-36 rounded-full mx-auto shadow-2xl shadow-blue-900/20 border-8 border-slate-50 flex items-center justify-center overflow-hidden bg-transparent">
+              <img 
+                src={LOGO_URL} 
+                alt="ANSH Logo" 
+                className="w-full h-full object-cover scale-110"
+              />
+            </div>
+            <div className="absolute top-0 right-0 w-10 h-10 bg-blue-600 rounded-full border-4 border-white flex items-center justify-center text-white shadow-lg translate-x-2 -translate-y-2">
+              <ShieldCheck size={20} />
+            </div>
+          </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight leading-none mb-2">
             Create Profile
           </h1>

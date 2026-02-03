@@ -7,7 +7,6 @@ import ChatExpert from './components/ChatExpert';
 import ProfileCreation from './components/ProfileCreation';
 import { 
   History, 
-  Wallet, 
   Settings, 
   LogOut, 
   Star,
@@ -20,12 +19,28 @@ import {
   ArrowRight,
   PlaneLanding,
   PlaneTakeoff,
-  Download
+  Download,
+  Calendar,
+  Car,
+  CheckCircle2
 } from 'lucide-react';
 
 interface UserProfile {
   name: string;
   phone: string;
+}
+
+interface SavedBooking {
+  id: string;
+  name: string;
+  phone: string;
+  pickup: string;
+  drop: string;
+  vehicleName: string;
+  fare: number;
+  distance: number;
+  date: string;
+  status: 'Pending' | 'Confirmed';
 }
 
 const App: React.FC = () => {
@@ -34,17 +49,23 @@ const App: React.FC = () => {
   const [bookingInit, setBookingInit] = useState<{ p: string; d: string } | null>(null);
   const [airportDirection, setAirportDirection] = useState<'from' | 'to'>('from');
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [bookings, setBookings] = useState<SavedBooking[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
     const savedProfile = localStorage.getItem('ansh_user_profile');
     if (savedProfile) {
-      setUserProfile(JSON.parse(savedProfile));
+      const parsed = JSON.parse(savedProfile);
+      setUserProfile(parsed);
+      
+      // Load bookings specific to this phone number
+      const allBookings = JSON.parse(localStorage.getItem('ansh_bookings') || '[]');
+      const userBookings = allBookings.filter((b: SavedBooking) => b.phone === parsed.phone);
+      setBookings(userBookings);
     }
     setIsLoaded(true);
 
-    // Capture install prompt for Play Store feel
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -63,11 +84,16 @@ const App: React.FC = () => {
   const handleProfileComplete = (profile: UserProfile) => {
     localStorage.setItem('ansh_user_profile', JSON.stringify(profile));
     setUserProfile(profile);
+    
+    // Load bookings for this new profile
+    const allBookings = JSON.parse(localStorage.getItem('ansh_bookings') || '[]');
+    setBookings(allBookings.filter((b: SavedBooking) => b.phone === profile.phone));
   };
 
   const handleSignOut = () => {
     localStorage.removeItem('ansh_user_profile');
     setUserProfile(null);
+    setBookings([]);
     setActiveTab('home');
   };
 
@@ -77,6 +103,24 @@ const App: React.FC = () => {
   };
 
   const handleWhatsAppConfirm = (data: any) => {
+    const newBooking: SavedBooking = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: data.name,
+      phone: data.phone,
+      pickup: data.pickup,
+      drop: data.drop,
+      vehicleName: data.vehicle?.name || 'Cab',
+      fare: data.fare,
+      distance: data.distance,
+      date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      status: 'Pending'
+    };
+
+    const allBookings = JSON.parse(localStorage.getItem('ansh_bookings') || '[]');
+    const updatedAll = [newBooking, ...allBookings];
+    localStorage.setItem('ansh_bookings', JSON.stringify(updatedAll));
+    setBookings(prev => [newBooking, ...prev]);
+
     const phoneNumber = "918850351310";
     const message = `*ANSH Tours & Travels Booking Request*%0A%0A` +
       `*Customer Name:* ${data.name}%0A` +
@@ -103,6 +147,7 @@ const App: React.FC = () => {
       case 'home':
         return (
           <Home 
+            userName={userProfile?.name}
             onQuickRoute={handleQuickRoute} 
             onAirportClick={() => setActiveTab('airport')} 
             onSearchClick={() => setActiveTab('book')}
@@ -119,33 +164,106 @@ const App: React.FC = () => {
         );
       case 'trips':
         return (
-          <div className="space-y-6 pt-4 animate-in fade-in">
-            <h2 className="text-xl font-bold">My Trips</h2>
-            <div className="bg-blue-50 border border-blue-100 rounded-3xl p-6 text-center">
-              <History size={48} className="text-blue-400 mx-auto mb-4" />
-              <h3 className="font-bold text-blue-900 mb-1">Check WhatsApp</h3>
-              <p className="text-xs text-blue-700 mb-4">Your request has been sent! Our team will confirm the driver details on WhatsApp shortly.</p>
-              <button 
-                onClick={() => setActiveTab('book')}
-                className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm"
-              >
-                Book Another Trip
-              </button>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-800 mb-3">Recent Requests</h3>
-              <div className="bg-white border border-gray-100 rounded-2xl p-4 flex gap-4 items-center opacity-60">
-                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">
-                  <Star size={24} />
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold">Mumbai Local</h4>
-                  <p className="text-[10px] text-gray-400">Just now • Pending Confirmation</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-black text-emerald-600">Sent</p>
-                </div>
+          <div className="space-y-6 pt-4 animate-in fade-in pb-10">
+            <div className="flex items-center justify-between px-1">
+              <div>
+                <h2 className="text-2xl font-black text-slate-900 leading-none">My Trips</h2>
+                <p className="text-xs text-slate-400 font-medium mt-1">Booked on {userProfile.phone}</p>
               </div>
+              <div className="p-2.5 bg-slate-50 rounded-2xl border border-slate-100">
+                <Calendar size={20} className="text-blue-600" />
+              </div>
+            </div>
+
+            {bookings.length === 0 ? (
+              <div className="bg-white border border-slate-100 rounded-[32px] p-10 text-center space-y-4 shadow-sm">
+                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
+                  <History size={40} className="text-slate-200" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-bold text-slate-800 text-lg">No trips found</h3>
+                  <p className="text-xs text-slate-400">You haven't booked any cabs yet.</p>
+                </div>
+                <button 
+                  onClick={() => setActiveTab('book')}
+                  className="bg-blue-600 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-100 active:scale-95 transition-all"
+                >
+                  Book Your First Ride
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {bookings.map((booking) => (
+                  <div key={booking.id} className="bg-white border border-slate-100 rounded-[32px] p-6 shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4">
+                      <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${
+                        booking.status === 'Confirmed' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
+                      }`}>
+                        {booking.status}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+                        <Car size={24} />
+                      </div>
+                      <div className="flex-1 space-y-4">
+                        <div>
+                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{booking.date}</p>
+                          <h4 className="font-bold text-slate-800">{booking.vehicleName}</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                            <p className="text-xs font-bold text-slate-600 line-clamp-1">{booking.pickup}</p>
+                          </div>
+                          <div className="w-0.5 h-3 bg-slate-100 ml-0.5" />
+                          <div className="flex items-center gap-3">
+                            <MapPin size={10} className="text-blue-600" />
+                            <p className="text-xs font-bold text-slate-600 line-clamp-1">{booking.drop}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2">
+                          <div className="flex items-center gap-4">
+                            <div>
+                              <p className="text-[9px] text-slate-400 font-bold uppercase">Distance</p>
+                              <p className="text-xs font-black text-slate-800">{booking.distance} KM</p>
+                            </div>
+                            <div className="w-px h-6 bg-slate-100" />
+                            <div>
+                              <p className="text-[9px] text-slate-400 font-bold uppercase">Fare</p>
+                              <p className="text-xs font-black text-blue-600">₹{booking.fare}</p>
+                            </div>
+                          </div>
+                          <button 
+                            onClick={() => window.open(`https://wa.me/918850351310?text=I'd like an update on my booking ID ${booking.id}`, '_blank')}
+                            className="p-2 bg-slate-50 text-slate-400 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-all"
+                          >
+                            <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="bg-blue-600 rounded-[32px] p-8 text-white relative overflow-hidden shadow-xl shadow-blue-200">
+              <div className="relative z-10 space-y-2">
+                <CheckCircle2 size={32} className="text-blue-300 mb-2" />
+                <h3 className="text-xl font-bold leading-tight">Need help with <br/> existing trips?</h3>
+                <p className="text-xs text-blue-100">Our concierge is available 24/7 on WhatsApp for route changes or driver details.</p>
+                <button 
+                  onClick={() => window.open('https://wa.me/918850351310', '_blank')}
+                  className="mt-4 px-6 py-2 bg-white text-blue-600 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg"
+                >
+                  Contact Support
+                </button>
+              </div>
+              <Plane size={140} className="absolute -right-8 -bottom-8 opacity-10 -rotate-12" />
             </div>
           </div>
         );
@@ -285,16 +403,6 @@ const App: React.FC = () => {
               )}
               <div className="py-4 flex justify-between items-center group cursor-pointer">
                 <div className="flex items-center gap-4">
-                  <div className="p-2.5 bg-blue-50 rounded-xl text-blue-600"><Wallet size={20} /></div>
-                  <div>
-                    <h4 className="text-sm font-bold">Wallet Balance</h4>
-                    <p className="text-[10px] text-gray-400">Total Credits: ₹150</p>
-                  </div>
-                </div>
-                <button className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold">Top Up</button>
-              </div>
-              <div className="py-4 flex justify-between items-center group cursor-pointer">
-                <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-gray-50 rounded-xl text-gray-600"><Globe size={20} /></div>
                   <div>
                     <h4 className="text-sm font-bold">Language</h4>
@@ -322,6 +430,7 @@ const App: React.FC = () => {
       default:
         return (
           <Home 
+            userName={userProfile?.name}
             onQuickRoute={handleQuickRoute} 
             onAirportClick={() => setActiveTab('airport')} 
             onSearchClick={() => setActiveTab('book')}
