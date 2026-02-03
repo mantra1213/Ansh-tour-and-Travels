@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Home as HomeIcon, 
@@ -27,7 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, onSu
     { id: 'profile', icon: User, label: 'Profile' },
   ];
 
-  const LOGO_URL = "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg";
+  const LOGO_URL = "https://res.cloudinary.com/do0t3gaf2/image/upload/v1770113085/shifter-192x192_o6c1i5.png";
 
   const handleTabChange = (id: string) => {
     if ('vibrate' in navigator) {

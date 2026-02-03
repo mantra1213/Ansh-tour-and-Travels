@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User, Phone, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
@@ -10,7 +9,7 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ onComplete }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [step, setStep] = useState(1);
-  const LOGO_URL = "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg";
+  const LOGO_URL = "https://res.cloudinary.com/do0t3gaf2/image/upload/v1770113085/shifter-192x192_o6c1i5.png";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +42,7 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ onComplete }) => {
               <img 
                 src={LOGO_URL} 
                 alt="ANSH Logo" 
-                className="w-full h-full object-cover scale-110"
+                className="w-full h-full object-cover"
               />
             </div>
             <div className="absolute top-0 right-0 w-10 h-10 bg-blue-600 rounded-full border-4 border-white flex items-center justify-center text-white shadow-lg translate-x-2 -translate-y-2">

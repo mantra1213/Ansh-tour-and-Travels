@@ -13,13 +13,13 @@
   "categories": ["travel", "transportation", "lifestyle"],
   "icons": [
     {
-      "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg",
+      "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1770113085/shifter-192x192_o6c1i5.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg",
+      "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1770113085/shifter-192x192_o6c1i5.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
@@ -27,13 +27,13 @@
     {
       "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
       "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "maskable"
     }
   ],
@@ -50,12 +50,12 @@
     {
       "name": "Book Now",
       "url": "./?tab=book",
-      "icons": [{ "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg", "sizes": "192x192" }]
+      "icons": [{ "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1770113085/shifter-192x192_o6c1i5.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "My Trips",
       "url": "./?tab=trips",
-      "icons": [{ "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1769845646/Whisk_fc5b38ea3100484abcf41f72883e154ddr-Photoroom_euuchp.jpg", "sizes": "192x192" }]
+      "icons": [{ "src": "https://res.cloudinary.com/do0t3gaf2/image/upload/v1770113085/shifter-192x192_o6c1i5.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
