@@ -2,7 +2,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
 export const getMumbaiExpertAdvice = async (userPrompt: string) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+  // Use the API key directly as per guidelines
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -10,24 +11,23 @@ export const getMumbaiExpertAdvice = async (userPrompt: string) => {
       config: {
         systemInstruction: `You are the "ANSH Mumbai Expert", a helpful AI travel assistant for ANSH Tours & Travels. 
         You know everything about Mumbai, Badlapur, Navi Mumbai, and popular outstation routes like Shirdi, Pune, and Nashik.
-        Your tone is premium, professional, and friendly.
-        Provide advice on travel times, best routes to avoid traffic, estimated fares based on ₹12/km, and local sightseeing tips.
-        Always promote ANSH services gracefully. Use Marathi or Hindi words occasionally if requested or appropriate for a local feel.`,
+        Your tone is professional and friendly.
+        Provide advice on travel times, routes, and sightseeing.`,
       },
     });
     return response.text;
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "I'm having a bit of trouble connecting to the Mumbai expert line. How can I help you with your booking manually?";
+    return "I'm having a bit of trouble connecting to the Mumbai expert line. How can I help you manually?";
   }
 };
 
 export const generateItinerary = async (destination: string) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
-      contents: `Create a one-day travel itinerary for ${destination} starting from Mumbai with ANSH Tours & Travels. Include food stops and timing.`,
+      contents: `Create a one-day travel itinerary for ${destination} starting from Mumbai.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -51,9 +51,9 @@ export const generateItinerary = async (destination: string) => {
         }
       }
     });
-    return JSON.parse(response.text);
+    return JSON.parse(response.text || '{}');
   } catch (error) {
-    console.error("Itinerary Generation Error:", error);
+    console.error("Itinerary Error:", error);
     return null;
   }
 };
